@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:19:58 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 18:53:20 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:11:09 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	exec_builtin(t_general *all, t_token **cmdline, int i, t_builtins type)
 		return (1);
 	ret = 0;
 	if (type == b_echo)
-		ret = ft_echo(all->all_cmds[i].cmd_args);
+		ret = ft_echo(all->all_cmds[i].cmd_args, 0, 0);
 	else if (type == b_env)
 		ret = ft_env(all, all->all_cmds[i].cmd_args);
 	else if (type == b_pwd)

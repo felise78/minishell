@@ -6,7 +6,7 @@
 /*   By: hemottu <hemottu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 16:03:41 by hemottu           #+#    #+#             */
-/*   Updated: 2023/09/14 18:21:35 by hemottu          ###   ########.fr       */
+/*   Updated: 2023/09/19 10:22:44 by hemottu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,10 @@ int	is_var_to_expand(char *str)
 	nb_vars = 0;
 	while (str[i])
 	{
-		if (str[i] == 39)
-		{
-			i++;
-			while (str[i] && str[i] != 39)
-				i++;
-		}
-		// if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1])
-		// 		|| str[i + 1] == '?' || str[i + 1] == '_'))
-		if (str[i] == '$' && str[i + 1] && !is_space(str[i + 1]))
-			nb_vars++;
+		if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1])
+				|| str[i + 1] == '?' || str[i + 1] == '_' 
+				|| str[i + 1] == 34 || str[i + 1] == 39))
+			nb_vars++;	
 		i++;
 	}
 	return (nb_vars);

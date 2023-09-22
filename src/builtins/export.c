@@ -6,53 +6,11 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:09:34 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/13 17:22:04 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:40:40 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*find_var(t_general *all, int i)
-{
-	char	*var;
-	int		j;
-
-	var = ft_strdup(all->address_envp[0][i]);
-	if (!var)
-		return (NULL);
-	j = 0;
-	while (var[j])
-	{
-		if (var[j] == '=')
-			var[j] = 0;
-		else
-			j++;
-	}
-	return (var);
-}
-
-int	export_no_args(t_general *all)
-{
-	int		i;
-	char	*value;
-	char	*var;
-
-	i = 0;
-	while (all->address_envp[0] && all->address_envp[0][i])
-	{
-		value = ft_strchr_one(all->address_envp[0][i], '=');
-		if (!value)
-			return (1);
-		var = find_var(all, i);
-		if (!var)
-			return (-2);
-		ft_dprintf(1, "%s=\"%s\"\n", var, value);
-		free(var);
-		var = NULL;
-		i++;
-	}
-	return (0);
-}
 
 static int	set_to_env(t_general *all, char **cmd_and_args)
 {
@@ -93,7 +51,7 @@ int	ft_export(t_general *all, char **cmd_and_args)
 	size = find_array_size(cmd_and_args);
 	if (size == 1)
 	{
-		ret = export_no_args(all);
+		ret = sort_envp(all);
 		if (ret != 0)
 			return (ret);
 	}

@@ -6,7 +6,7 @@
 /*   By: hemottu <hemottu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 16:50:44 by hemottu           #+#    #+#             */
-/*   Updated: 2023/09/14 17:46:34 by hemottu          ###   ########.fr       */
+/*   Updated: 2023/09/21 14:58:44 by hemottu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	ft_check_syntax_tokens(t_token **cmd_line)
 	t_token	*current;
 
 	current = *cmd_line;
-	// if (!current)
-	// 	return (0);
+	if (!current)
+		return (0);
 	if (current->type == PIPE)
 	{
 		ft_putstr_fd("syntax error near unexpected token \'|\'\n", 2);

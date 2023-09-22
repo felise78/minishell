@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 16:54:39 by hemottu           #+#    #+#             */
-/*   Updated: 2023/09/13 17:58:39 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:52:18 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,15 @@ int	handle_eof(t_general *all)
 void	child_handler(int signum)
 {
 	if (signum == SIGINT)
+	{
+		g_status = 130;
 		printf("\n");
+	}
 	if (signum == SIGQUIT)
+	{
+		g_status = 131;
 		printf("Quit (core dumped)\n");
+	}
 }
 
 void	ft_signals_child(void)

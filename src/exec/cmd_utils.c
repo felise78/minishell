@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:04:12 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 17:07:00 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/18 14:29:53 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,16 @@ static int	is_redirection(t_general *all, t_token **cmdline, int i)
 	ret = 0;
 	if ((*cmdline)->type > HEREDOC || is_last_heredoc(&(*cmdline)))
 	{
-		new = ft_token_new(ft_strdup((*cmdline)->next->value), (*cmdline)->type);
+		new = ft_token_new(ft_strdup((*cmdline)->next->value),
+				(*cmdline)->type);
 		if (!new || !(new->value))
 			return (-2);
 		ret = set_redir_lists(&(all->all_cmds[i].redirections), new);
 		if ((*cmdline)->type >= HEREDOC && (*cmdline)->next)
 			*cmdline = (*cmdline)->next->next;
 	}
-	if ((*cmdline) && (*cmdline)->type == HEREDOC && !is_last_heredoc(&(*cmdline)) && (*cmdline)->next)
+	if ((*cmdline) && (*cmdline)->type == HEREDOC
+		&& !is_last_heredoc(&(*cmdline)) && (*cmdline)->next)
 		*cmdline = (*cmdline)->next->next;
 	return (ret);
 }

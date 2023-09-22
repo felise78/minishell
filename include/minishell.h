@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemottu <hemottu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 16:31:47 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 18:53:06 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:57:43 by hemottu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct s_general
 	t_list		**env;
 	char		**new_env;
 	char		***address_envp;
+	int			env_ignored;
+	int			fd_tmp;
 	t_command	*all_cmds;
 	t_pipe		*pipeline;
 	t_token		**cmdline;
@@ -89,6 +91,7 @@ int		parse_cmdline(t_general *all, t_token **cmdline);
 t_token	*locate_cmd(t_token **cmd_line);
 int		ft_fork(t_general *all, t_token **cmd_line);
 int		fork_single_command(t_general *all, t_token **cmdline);
+int		abs_path_errors(char *cmd);
 int		check_absolute_path(t_general *all, int i);
 int		ft_isdir(char *pathname);
 int		find_path(t_general *all, int i);
@@ -99,6 +102,7 @@ int		ft_exec(t_general *all, t_token **cmdline, int i);
 /*UTILS*/
 int		find_array_size(char **array);
 char	**copy_tab(char **tab);
+t_list	*copy_list(t_list **list);
 int		join_dir(t_list **path, char **dir);
 int		set_struct_redir(char **struct_str, char *file);
 

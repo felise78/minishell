@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 17:45:06 by pichatte          #+#    #+#             */
-/*   Updated: 2023/08/08 16:31:40 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:01:26 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 			return (a1[i] - a2[i]);
 		i++;
 	}
-	if (i < n && a1[i] != a2[i])
-		return (1);
-	return (0);
+	if (i == n)
+		return (0);
+	return (a1[i] - a2[i]);
 }

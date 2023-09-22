@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 19:02:00 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 18:47:44 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/18 14:31:09 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_isdir(char *pathname)
 {
-	struct stat statbuf;
+	struct stat	statbuf;
 
 	if (stat(pathname, &statbuf) != 0)
 		return (0);
@@ -45,55 +45,4 @@ int	join_dir(t_list **path, char **dir)
 		tmp = tmp->next;
 	}
 	return (0);
-}
-
-int	del_periods(t_list **path, char **dir)
-{
-	t_list	*tmp;
-	t_list	*new_tmp;
-
-	tmp = *path;
-	while (tmp)
-	{
-		if (!ft_strncmp("..", tmp->content, 3))
-		{
-			new_tmp = tmp->next;
-			ft_lstdelone(path, tmp->previous, &use_free);
-			ft_lstdelone(path, tmp, &use_free);
-			tmp = new_tmp;
-		}
-		else if (!ft_strncmp(".", tmp->content, 2))
-		{
-			new_tmp = tmp->next;
-			ft_lstdelone(path, tmp, &use_free);
-			tmp = new_tmp;
-		}
-		else
-			tmp = tmp->next;
-	}
-	return (join_dir(path, dir));
-}
-
-int	check_periods(char **dir)
-{
-	char	**split_slash;
-	t_list	*path;
-	int		i;
-	int		ret;
-
-	split_slash = ft_split(*dir, '/');
-	if (!split_slash)
-		return (-1);
-	ret = 0;
-	path = NULL;
-	i = 0;
-	while (split_slash[i])
-	{
-		ft_lstadd_back(&path, ft_lstnew(split_slash[i]));
-		i++;
-	}
-	ret = del_periods(&path, dir);
-	ft_lstclear(&path, &free);
-	free(split_slash);
-	return (ret);
 }

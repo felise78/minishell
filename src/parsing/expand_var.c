@@ -6,11 +6,65 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:11:09 by hemottu           #+#    #+#             */
-/*   Updated: 2023/09/13 15:46:41 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:53:24 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+char	*replace_expand(char *str, int j, t_var *var, char *expand)
+{
+	char	*new;
+	int		i;
+	int		h;
+
+	(void)expand;
+	i = 0;
+	h = 0;
+	new = malloc(ft_strlen(str) - var->len_var + var->len_exp + 1);
+	if (!new)
+		return (free(str), free(var->value), free(var->expand), NULL);
+	while (i < j)
+	{
+		new[i] = str[i];
+		i++;
+	}
+	while (h < var->len_exp)
+		new[i++] = var->expand[h++];
+	j = j + var->len_var + 1;
+	while (str[j])
+		new[i++] = str[j++];
+	new[i] = '\0';
+	free(var->value);
+	free(var->expand);
+	free(str);
+	return (new);
+}
+
+char	*remove_expand(char *str, int j, t_var *var)
+{
+	char	*new;
+	int		i;
+
+	i = 0;
+	new = malloc(ft_strlen(str) - var->len_var + 1);
+	if (!new)
+		return (free(str), NULL);
+	while (i < j)
+	{
+		if (i == j - 1 && str[j - 1] == '$')
+			i++;
+		new[i] = str[i];
+		i++;
+	}
+	j = j + var->len_var + 1;
+	while (str[j])
+		new[i++] = str[j++];
+	new[i] = '\0';
+	free(str);
+	free(var->value);
+	return (new);
+}
 
 int	ft_data_var(char *str, int j, t_var *var, t_list *in_env)
 {

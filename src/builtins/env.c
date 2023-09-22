@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 15:51:26 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 11:00:02 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:36:36 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	export_new_env(t_general *all)
 	free_tab(&(all->new_env));
 	all->new_env = ft_calloc(sizeof(char *), ft_lstsize(all->env[0]) + 1);
 	if (!all->new_env)
-		return (-2);
+		return (g_status = -2, -2);
 	i = 0;
 	tmp = all->env[0];
 	while (tmp)

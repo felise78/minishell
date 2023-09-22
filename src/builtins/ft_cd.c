@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 18:23:43 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 18:00:27 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:56:00 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,48 +21,67 @@ int	cd_errors(char **cmd_and_args)
 	size = find_array_size(cmd_and_args);
 	if (size != 2)
 	{
-		ft_putstr_fd("cd: too many arguments\n", 2);
+		if (size < 2)
+			ft_dprintf(2, "cd: missing pathname\n");
+		if (size > 2)
+			ft_putstr_fd("cd: too many arguments\n", 2);
+		g_status = 1;
 		return (2);
 	}
 	return (0);
 }
 
-int	set_pwd(t_general *all, char *new_pwd)
+int	set_pwd(t_general *all, char *oldpwd)
 {
-	t_list	*tmp;
 	t_list	*old;
 	t_list	*current;
+	char	*pwd;
 
-	old = NULL;
-	current = NULL;
-	tmp = all->env[0];
 	old = node_in_env(all, "OLDPWD");
 	current = node_in_env(all, "PWD");
-	if (!old || !current)
-		return (1);
-	new_pwd = ft_strjoin_free("PWD=", new_pwd, 2);
-	if (!new_pwd)
-		return (-2);
-	current->content = (char *)(ft_strjoin_free("OLD", current->content, 2));
-	if (!current->content)
-		return (-2);
-	free(old->content);
-	old->content = current->content;
-	current->content = (char *)new_pwd;
-	return (0);
+	pwd = NULL;
+	if (old)
+	{
+		free(old->content);
+		old->content = ft_strjoin_free("OLDPWD=", oldpwd, 2);
+		if (!old->content)
+			return (g_status = -2, -2);
+	}
+	if (current)
+	{
+		free(current->content);
+		pwd = getcwd(pwd, 0);
+		if (!pwd)
+			return (g_status = -2, -2);
+		current->content = ft_strjoin_free("PWD=", pwd, 2);
+		if (!current->content)
+			return (g_status = -2, -2);
+	}
+	return (export_new_env(all));
 }
 
-int	cd_and_set_pwd(t_general *all, char *dir)
+int	cd_and_set_pwd(t_general *all, char *dir, char *original)
 {
-	if (access(dir, F_OK | X_OK) != 0)
+	char	*oldpwd;
+
+	oldpwd = NULL;
+	if (!ft_isdir(dir))
+	{
+		if (original)
+			ft_dprintf(2, "%s: Not a directory\n", original);
 		return (1);
+	}
+	else if (access(dir, F_OK | X_OK) != 0)
+		return (perror(original), 1);
 	else
 	{
-		check_periods(&dir);
+		oldpwd = getcwd(oldpwd, 0);
+		if (!oldpwd)
+			return (g_status = -2, -2);
 		if (chdir(dir))
 			return (1);
 	}
-	set_pwd(all, dir);
+	set_pwd(all, oldpwd);
 	return (0);
 }
 
@@ -73,24 +92,23 @@ int	ft_cd(t_general *all, char **cmd_and_args)
 	if (cd_errors(cmd_and_args))
 		return (1);
 	pwd = NULL;
-	if (ft_strchr(cmd_and_args[1], '/') == cmd_and_args[1])
+	if (cmd_and_args[1] && cmd_and_args[1][0] == '/')
 	{	
 		pwd = ft_strdup(cmd_and_args[1]);
 		if (!pwd)
-			return (-2);
+			return (g_status = -2, -2);
 	}		
 	else
 	{
-		pwd = ft_strjoin_free(getcwd(pwd, 0), "/", 1);
+		pwd = getcwd(pwd, 0);
+		if (!pwd)
+			return (g_status = -2, -2);
+		pwd = ft_strjoin_free(pwd, "/", 1);
 		pwd = ft_strjoin_free(pwd, cmd_and_args[1], 1);
 		if (!pwd)
 			return (-2);
 	}
-	if (cd_and_set_pwd(all, pwd))
-	{
-		perror(cmd_and_args[1]);
-		free(pwd);
-		return (1);
-	}
-	return (0);
+	if (cd_and_set_pwd(all, pwd, cmd_and_args[1]))
+		return (free(pwd), g_status = 1, 1);
+	return (free(pwd), 0);
 }

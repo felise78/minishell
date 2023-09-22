@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 16:16:26 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 17:04:21 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/18 14:28:40 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_last_heredoc(t_token **here_node)
 int	close_other_heredocs(t_general *all, int i)
 {
 	int	j;
-	
+
 	if (!all || !all->all_cmds)
 		return (0);
 	j = 0;
