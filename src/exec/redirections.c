@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:56:08 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 15:32:33 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/18 19:32:06 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ int	ft_set_redirection(t_command *cmd)
 		if (fd == -1)
 		{
 			perror(tmp->value);
-			return (1);
+			return (g_status = 1, 1);
 		}
 		if (ft_dup_redir(&tmp, &fd) != 0)
-			return (close(fd), 1);
+			return (g_status = 1, close(fd), 1);
 		if (close(fd) == -1)
 		{
 			perror("close");
-			return (1);
+			return (g_status = 1, 1);
 		}
 		tmp = tmp->next;
 	}

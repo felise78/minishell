@@ -26,6 +26,7 @@ SRC:=${SRC_DIR}/init.c \
 	${SRC_DIR}/exec/fork.c \
 	${SRC_DIR}/exec/free.c \
 	${SRC_DIR}/exec/path.c	\
+	${SRC_DIR}/exec/path_utils.c	\
 	${SRC_DIR}/exec/signals.c	\
 	${SRC_DIR}/parsing/analyse_delimiters.c \
 	${SRC_DIR}/parsing/analyse_words.c \
@@ -54,13 +55,13 @@ SRC:=${SRC_DIR}/init.c \
 OBJ:=${patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC)} 
 
 #Rules
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
-
 ${NAME}: ${OBJ} include/minishell.h include/parsing.h include/builtins.h
 	$(MAKE) -C $(LIBFT_DIR)
 	${CC} ${CFLAGS} ${OBJ} ${LIBFT} -o ${NAME} -lreadline
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 all: ${NAME}
 

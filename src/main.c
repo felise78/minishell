@@ -6,7 +6,7 @@
 /*   By: hemottu <hemottu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:07:05 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 19:39:08 by hemottu          ###   ########.fr       */
+/*   Updated: 2023/09/22 17:12:05 by hemottu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	main_parsing(char *str, t_token **cmd_line, t_general *all)
 {
-	// if (!str || !str[0])
-	// 	return (0);
 	if (!(is_quote_closed(str)))
 	{
 		ft_putstr_fd("minishell : syntax error : quote not closed\n", 2);
@@ -28,7 +26,7 @@ int	main_parsing(char *str, t_token **cmd_line, t_general *all)
 		return (g_status = -2, 0);
 	if (!(ft_check_if_heredoc(cmd_line, all))
 		|| !(ft_check_syntax_tokens(cmd_line))
-		|| !(ft_check_if_expand(cmd_line, all)))
+		|| !(ft_check_if_expand(cmd_line, all, cmd_line[0])))
 		return (0);
 	ft_analyse_words(cmd_line);
 	ft_analyse_again(cmd_line);
@@ -47,25 +45,25 @@ int	readline_loop(t_general *all, t_token **cmdline)
 	while (g_status != -2 && g_status != 254)
 	{
 		free(str);
+		all->cmdline[0] = NULL;
 		str = readline("minishell$ ");
 		if (!str)
 			return (handle_eof(all));
-		all->cmdline[0] = NULL;
 		if ((str)[0] != 0 && ft_strlen(str))
 		{
 			add_history(str);
+			signal(SIGINT, &handler);
 			ret = main_parsing(str, cmdline, all);
 			if (ret == 0)
 			{
 				free_and_set_null(all);
-				printf("exit code: %d\n", g_status); ///
 				continue ;
 			}
 			ret = ft_fork(all, all->cmdline);
 			free_and_set_null(all);
-			printf("exit code: %d\n", g_status); ///
 		}
 	}
+	free(str);
 	return (g_status);
 }
 

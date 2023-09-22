@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemottu <hemottu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 21:30:28 by bourdon           #+#    #+#             */
-/*   Updated: 2023/09/13 18:14:02 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:13:58 by hemottu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,16 @@
 
 void	set_pointers(t_general *all, t_pipe *pipeline, t_token **cmd_line)
 {
+	*cmd_line = NULL;
+	all->all_cmds = NULL;
+	all->env_ignored = 0;
 	all->pipeline = pipeline;
+	pipeline->pipes = -1;
+	pipeline->pid = NULL;
 	pipeline->all = all;
 	all->cmdline = cmd_line;
 	pipeline->cmdline = all->cmdline;
+	all->fd_tmp = -1; //
 }
 
 int	ft_set_env(t_general *all, t_list **env, char **envp)
@@ -34,6 +40,8 @@ int	ft_set_env(t_general *all, t_list **env, char **envp)
 		free_tab(&(all->new_env));
 		return (ret);
 	}
+	if (env && !env[0])
+		all->env_ignored = 1;
 	return (0);
 }
 

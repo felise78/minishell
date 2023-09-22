@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemottu <hemottu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 18:49:57 by hemottu           #+#    #+#             */
-/*   Updated: 2023/09/13 15:26:41 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:54:41 by hemottu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		len_until_delimiter(char *str, int i);
 int		ft_check_syntax_tokens(t_token **cmd_line);
 int		ft_parse4quotes(t_token **cmd_line);
 int		is_var_to_expand(char *str);
-int		ft_check_if_expand(t_token **cmd_line, t_general *all);
+int		ft_check_if_expand(t_token **cmd_line, t_general *all, t_token *current);
 int		ft_len_variable(char *str, int i);
 int		ft_strcmpenv(char *s1, int index, char *s2, int len);
 int		ft_expand_len(t_list *in_env, t_var *var);
@@ -79,6 +79,7 @@ int		ft_len(int n);
 int		ft_check4var(t_token *token);
 int		token_word(t_token **cmd_line, char *str, int i);
 int		heredoc_count(t_token *current);
+int		close_heredoc_fd(int fd);
 char	*ft_expand_var(char *str, int i, t_general *all, t_var *var);
 char	*replace_expand(char *str, int j, t_var *var, char *expand);
 char	*remove_expand(char *str, int j, t_var *var);

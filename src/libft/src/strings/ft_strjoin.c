@@ -6,7 +6,7 @@
 /*   By: hemottu <hemottu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:20:40 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/14 19:30:37 by hemottu          ###   ########.fr       */
+/*   Updated: 2023/09/15 15:44:41 by hemottu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
 	str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
-	free(str); ///
-	str = NULL; ///
 	if (!str)
 		return (NULL);
 	i = 0;

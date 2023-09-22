@@ -6,7 +6,7 @@
 /*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 19:27:55 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/13 18:10:32 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:28:46 by pichatte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	ft_exit(t_general *all, char **cmd_and_args)
 	if (size <= 0)
 		return (-1);
 	code = 0;
-	ft_dprintf(1, "exit\n");
+	if (isatty(STDOUT_FILENO) && isatty(STDIN_FILENO))
+		ft_dprintf(STDOUT_FILENO, "exit\n");
 	if (size > 1)
 	{
 		if (ft_all_digits(cmd_and_args[1]))

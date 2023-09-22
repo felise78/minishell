@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pichatte <pichatte@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemottu <hemottu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 11:42:45 by pichatte          #+#    #+#             */
-/*   Updated: 2023/09/12 20:13:01 by pichatte         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:19:02 by hemottu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,17 @@ void	free_cmds(t_general *all)
 	if (!all)
 		return ;
 	i = 0;
+	if (all->fd_tmp != -1)
+		close_heredoc_fd(all->fd_tmp); // a proteger ?
+	all->fd_tmp = -1; //
 	while (i <= all->pipeline->pipes)
 	{
 		if (all->all_cmds)
 		{
+			if(all->all_cmds[i].here_fd[0] != -1)
+				close_heredoc_fd(all->all_cmds[i].here_fd[0]); // a proteger ? 
+			if(all->all_cmds[i].here_fd[1] != -1)
+				close_heredoc_fd(all->all_cmds[i].here_fd[1]); // a proteger ? 
 			free_tab(&(all->all_cmds[i].cmd_args));
 			ft_free_cmd_line(&(all->all_cmds[i].redirections));
 		}
